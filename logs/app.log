@@ -1,0 +1,13 @@
+2024-11-28 07:11:41 error: Error creating user: RoleModel is not defined
+2024-11-28 07:11:47 error: Error creating user: RoleModel is not defined
+2024-11-28 07:12:55 error: Error creating user: bcrypt is not defined
+2024-11-28 09:29:07 error: Error creating user: E11000 duplicate key error collection: rbac.users index: phoneNo_1 dup key: { phoneNo: 8200988308.0 }
+2024-11-28 09:55:08 warn: Role already exists with name: admin
+2024-11-28 09:57:21 warn: Role not found with ID: 6747eb44fa65b1be3c6c1295
+2024-11-28 10:13:24 error: Error updating role: Plan executor error during findAndModify :: caused by :: E11000 duplicate key error collection: rbac.roles index: name_1 dup key: { name: "user" }
+2024-11-28 10:14:02 error: Error updating role: Plan executor error during findAndModify :: caused by :: E11000 duplicate key error collection: rbac.roles index: name_1 dup key: { name: "user" }
+2024-11-28 10:34:08 info: Fetching User Information : 
+2024-11-28 12:54:32 error: Error fetching user:  AuditLogModel is not defined
+2024-11-28 12:54:40 error: Error updating user:  AuditLogModel is not defined
+2024-11-28 17:56:52 error: Error updating user:  AuditLog validation failed: action: `UPDATE_PROFILE` is not a valid enum value for path `action`.
+2024-11-28 17:57:09 error: Error fetching user:  AuditLog validation failed: action: `VIEW_PROFILE` is not a valid enum value for path `action`.

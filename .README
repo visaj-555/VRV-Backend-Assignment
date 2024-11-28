@@ -1,0 +1,157 @@
+## RBAC User Management System
+
+## Overview
+
+This project implements a secure and robust Role-Based Access Control (RBAC) system to manage users, roles, and permissions effectively. The application provides a set of APIs for user management, role assignment, permission handling, and logging audit events. It also integrates secure authentication and authorization mechanisms to ensure resource protection and seamless access control.
+
+## Modules
+
+### 1. User Management
+
+The User module handles user registration, profile management, and user-specific actions. Key features include:
+
+- Register User: Allows new users to register.
+- User Profile Management: View and update user profiles, with file upload for profile images.
+- Authentication: Implements secure login and logout with JWT.
+- Password Management: Enables users to change or reset passwords securely.
+
+#### Routes
+
+| Endpoint                   | Method | Middleware                                                     | Description                 |
+| -------------------------- | ------ | -------------------------------------------------------------- | --------------------------- |
+| `/register-user`           | POST   | None                                                           | Registers a new user.       |
+| `/user-profile/:id`        | GET    | `ensureAuthenticated`, `checkPermission("view_own_profile")`   | Retrieves a user's profile. |
+| `/user-profile/update/:id` | PUT    | `ensureAuthenticated`, `checkPermission("update_own_profile")` | Updates a user's profile.   |
+| `/user/delete/:id`         | DELETE | `ensureAuthenticated`, `checkPermission("delete_user")`        | Deletes a user's account.   |
+
+---
+
+### 2. Role Management
+
+The Role module is used to manage roles and assign permissions. This ensures granular control over what each role can access or perform within the system.
+
+#### Key Features
+
+- Create Roles: Allows admins to create new roles.
+- Update/Delete Roles: Enables modification or removal of roles.
+- Assign Permissions: Assigns specific permissions to roles.
+
+#### Routes
+
+| Endpoint                       | Method | Middleware                           | Description                             |
+| ------------------------------ | ------ | ------------------------------------ | --------------------------------------- |
+| `/roles/:id?`                  | GET    | `ensureAuthenticated`, `ensureAdmin` | Fetches all roles or a specific role.   |
+| `/admin/create-roles`          | POST   | `ensureAuthenticated`, `ensureAdmin` | Creates a new role.                     |
+| `/admin/update-roles/:id`      | PATCH  | `ensureAuthenticated`, `ensureAdmin` | Updates an existing role.               |
+| `/admin/delete-roles/:id`      | DELETE | `ensureAuthenticated`, `ensureAdmin` | Deletes a role.                         |
+| `/admin/roles/:id/permissions` | POST   | `ensureAuthenticated`, `ensureAdmin` | Assigns permissions to a specific role. |
+
+### 3. Authentication
+
+This module secures user authentication and ensures proper authorization.
+
+#### Key Features
+
+- JWT Token-Based Authentication: Securely validates user sessions.
+- Role-Based Access Control: Ensures only authorized roles access specific resources.
+- Password Management: Provides mechanisms to change, reset, or update passwords.
+
+#### Routes
+
+| Endpoint                | Method | Middleware            | Description                                  |
+| ----------------------- | ------ | --------------------- | -------------------------------------------- |
+| `/user/login`           | POST   | `userLoginValidate`   | Authenticates a user and provides a token.   |
+| `/user/logout`          | POST   | `ensureAuthenticated` | Logs out the user by invalidating the token. |
+| `/user/changepassword`  | POST   | `ensureAuthenticated` | Allows users to change their password.       |
+| `/user/forgot-password` | POST   | None                  | Initiates a password reset process.          |
+| `/user/reset-password`  | POST   | None                  | Validates OTP for password reset.            |
+| `/user/newpassword`     | POST   | None                  | Allows users to set a new password.          |
+
+### 4. Admin
+
+Admin module manages users and performs administrative actions like user creation, updates, and deletions.
+
+#### Route
+
+| Endpoint                 | Method | Middleware                           | Description                             |
+| ------------------------ | ------ | ------------------------------------ | --------------------------------------- |
+| `/admin/view-users/:id?` | GET    | `ensureAuthenticated`, `ensureAdmin` | Retrieves all or specific user details. |
+| `/admin/create-user`     | POST   | `ensureAuthenticated`, `ensureAdmin` | Creates a new user.                     |
+| `/admin/update-user/:id` | PUT    | `ensureAuthenticated`, `ensureAdmin` | Updates user information.               |
+| `/admin/delete-user/:id` | DELETE | `ensureAuthenticated`, `ensureAdmin` | Deletes a user.                         |
+
+### 5. Audit Logs
+
+The Audit Logs module tracks and stores user actions, enabling transparency and accountability within the system.
+
+#### Key Features
+
+- Fetch Audit Logs by User or Action: Retrieve logs based on user activity or specific actions.
+- Paginated Logs: Fetches logs in pages for better performance.
+- Log Cleanup: Deletes old logs to optimize storage.
+
+#### Routes
+
+| Endpoint                     | Method | Middleware                           | Description                             |
+| ---------------------------- | ------ | ------------------------------------ | --------------------------------------- |
+| `/admin/audit-logs/user/`    | GET    | `ensureAuthenticated`, `ensureAdmin` | Fetches audit logs for a specific user. |
+| `/admin/audit-logs/action`   | GET    | `ensureAuthenticated`, `ensureAdmin` | Fetches logs based on an action.        |
+| `/admin/audit-logs/paginate` | GET    | `ensureAuthenticated`, `ensureAdmin` | Retrieves paginated logs.               |
+| `/admin/audit-logs/cleanup`  | DELETE | `ensureAuthenticated`, `ensureAdmin` | Deletes old logs.                       |
+
+---
+
+## Security Features
+
+1. JWT-Based Authentication:
+   - Tokens are issued during login and verified for each API request.
+2. Password Management:
+   - Passwords are hashed using `bcrypt` to ensure they are not stored in plaintext.
+   - Password reset mechanisms with OTP validation.
+3. Role-Based Access Control (RBAC):
+   - Each role has associated permissions defining its capabilities.
+   - Middleware like `ensureAdmin` and `checkPermission` enforce role-based restrictions.
+
+## Evaluation Highlights
+
+### 1. Security Best Practices
+
+- Implemented secure authentication (JWT, hashed passwords).
+- Proper authorization checks for all protected resources.
+
+### 2. RBAC
+
+- Granular control over user actions with flexible role and permission assignments.
+- Middleware ensures strict enforcement of RBAC policies.
+
+### 3. Code Quality
+
+- Modularized codebase with clear separation of concerns.
+- Logging and error handling for debugging and audit purposes.
+
+### 4. Creativity
+
+- Comprehensive audit logging for transparency.
+- Pagination for efficient log retrieval and scalable architecture.
+
+## Setup Instructions
+
+1. Clone the repository:
+
+   git clone <repository-url>
+   cd <repository-folder>
+
+2. Install dependencies:
+
+   npm install
+
+3. Set up environment variables in a `.env` file:
+
+   SECRET=<your-jwt-secret>
+   DB_URI=<your-database-connection-string>
+
+4. Run the application:
+
+   npm start
+
+5. Test APIs using tools like Postman or curl.
