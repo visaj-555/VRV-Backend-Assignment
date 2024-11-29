@@ -34,6 +34,9 @@ export const createUser = async (req, res) => {
 
     await newUser.save();
 
+    newUser.password = undefined;
+
+
     return res.status(statusCode.CREATED).json({
       statusCode: statusCode.CREATED,
       message: message.userCreated,
