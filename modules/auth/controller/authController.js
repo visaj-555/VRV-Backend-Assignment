@@ -74,7 +74,7 @@ export const loginUser = async (req, res) => {
     res.status(statusCode.OK).json({
       statusCode: statusCode.OK,
       message: message.userLoggedIn,
-      data: { token, ...user.toObject(), password: undefined },
+      data: { token, ...user.toObject(), password: 0 },
     });
   } catch (error) {
     logger.error(`Error logging in user: ${email} - ${error.message}`);
